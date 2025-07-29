@@ -16,13 +16,13 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_odooci
+          chmod 600 ~/.ssh/id_odooci
           ssh-keyscan -H 147.79.110.139 >> ~/.ssh/known_hosts
 
       - name: Deploy to VPS
         run: |
-          ssh -i ~/.ssh/id_ed25519 root@147.79.110.139 "
+          ssh -i ~/.ssh/id_odooci root@147.79.110.139 "
             cd /root/Odoo-CosturaBrindes && \
             git reset --hard && \
             git pull origin main
