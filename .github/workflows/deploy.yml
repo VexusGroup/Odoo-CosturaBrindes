@@ -20,6 +20,8 @@ jobs:
           username: root
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
-            git config --global --add safe.directory /root/Odoo-CosturaBrindes
-            cd /root/Odoo-CosturaBrindes
+            git config --global --add safe.directory /home/odoo/Odoo-CosturaBrindes
+            cd /home/odoo/Odoo-CosturaBrindes
             git pull origin main
+            docker compose down
+            docker compose up -d
