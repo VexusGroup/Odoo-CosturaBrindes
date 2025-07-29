@@ -1,4 +1,4 @@
-name: Deploy to VPS
+name: Deploy automático na VPS
 
 on:
   push:
@@ -10,19 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Clonar repositório
         uses: actions/checkout@v3
 
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_PRIVATE_KEY }}" > ~/.ssh/id_odooci
-          chmod 600 ~/.ssh/id_odooci
-          ssh-keyscan -H 147.79.110.139 >> ~/.ssh/known_hosts
-
-      - name: Deploy to VPS
-        run: |
-          ssh -i ~/.ssh/id_odooci root@147.79.110.139 "
-          cd /root/Odoo-CosturaBrindes &&
-          git pull origin main
-          "
+      - name: Deploy na VPS via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 147.79.110.139
+          username: root
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          script: |
+            git config --global --add safe.directory /root/Odoo-CosturaBrindes
+            cd /root/Odoo-CosturaBrindes
+            git pull origin main
