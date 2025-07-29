@@ -1,4 +1,4 @@
-name: Deploy Odoo-CosturaBrindes
+name: Deploy to VPS
 
 on:
   push:
@@ -11,19 +11,18 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_odooci
+          echo "${{ secrets.VPS_PRIVATE_KEY }}" > ~/.ssh/id_odooci
           chmod 600 ~/.ssh/id_odooci
           ssh-keyscan -H 147.79.110.139 >> ~/.ssh/known_hosts
 
       - name: Deploy to VPS
         run: |
           ssh -i ~/.ssh/id_odooci root@147.79.110.139 "
-            cd /root/Odoo-CosturaBrindes && \
-            git reset --hard && \
-            git pull origin main
+          cd /root/Odoo-CosturaBrindes &&
+          git pull origin main
           "
